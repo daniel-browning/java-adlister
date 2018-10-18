@@ -60,10 +60,6 @@ public class MySQLUsersDao implements Users{
     private User createUserFromResults(ResultSet rs) {
         User user = new User();
         try {
-//            user =  new User(rs.getLong(1),
-//                    rs.getString(2),
-//                    rs.getString(3),
-//                    rs.getString(4));
             user.setId(rs.getLong(1));
             user.setUsername(rs.getString(2));
             user.setEmail(rs.getString(3));
