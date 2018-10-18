@@ -8,16 +8,24 @@ import java.io.IOException;
 @WebServlet(name = "LoginServlet", urlPatterns = "/login")
 public class LoginServlet extends HttpServlet {
 
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
-
-        String user = request.getParameter("username");
-        String password = request.getParameter("password");
-
-        if (user != null && password != null) {
-
-            if (user.equals("admin") && password.equals("password"))
-                response.sendRedirect("/profile.jsp");
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        if(request.getSession().getAttribute("username") != null){
+            response.sendRedirect("/profile");
+            return;
         }
-        request.getRequestDispatcher("/login.jsp").forward(request, response);
+        request.getRequestDispatcher("WEB-INF/login.jsp").forward(request, response);
+    }
+
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        String username = request.getParameter("username");
+        String password = request.getParameter("password");
+        boolean validAttempt = username.equals("admin") && password.equals("password");
+
+        if (validAttempt) {
+            request.getSession().setAttribute("username", username);
+            response.sendRedirect("/profile");
+        } else {
+            response.sendRedirect("/login");
+        }
     }
 }
